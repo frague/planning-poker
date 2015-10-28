@@ -1,12 +1,18 @@
+require('es6-promise').polyfill();
+
 // Include gulp
-var gulp = require('gulp'); 
+var gulp = require('gulp');
 
 // Include Our Plugins
 var jshint = require('gulp-jshint');
+
+var es = require('event-stream');
 var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var minifyCSS = require('gulp-minify-css');
+var autoprefixer = require('gulp-autoprefixer');
 
 // Lint Task
 gulp.task('lint', function() {
@@ -15,19 +21,26 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('default'));
 });
 
-// Compile Our Sass
-gulp.task('sass', function() {
-    return gulp.src('scss/*.scss')
+var sassConverted = function() {
+    return gulp
+        .src('app/sass/*.sass')
         .pipe(sass())
-        .pipe(gulp.dest('css'));
+        .pipe(autoprefixer('last 2 versions'));
+};
+
+// Concatenate, prefix and minify CSS
+gulp.task('css', function() {
+    return es.merge(sassConverted(), gulp.src(['bower_components/angular/angular-csp.css']))
+        .pipe(minifyCSS())
+        .pipe(concat('poker.css'))
+        .pipe(gulp.dest('dist/css'));
 });
 
 // Concatenate & Minify JS
 gulp.task('scripts', function() {
     return gulp.src('js/*.js')
         .pipe(concat('all.js'))
-        .pipe(gulp.dest('dist'))
-        .pipe(rename('all.min.js'))
+        .pipe(rename('poker.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('dist'));
 });
@@ -39,4 +52,4 @@ gulp.task('watch', function() {
 });
 
 // Default Task
-gulp.task('default', ['lint', 'sass', 'scripts', 'watch']);
+gulp.task('default', ['lint', 'sass', 'css', 'scripts', 'watch']);
