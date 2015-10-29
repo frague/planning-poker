@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Planning Poker</title>
+        <link rel="stylesheet" href="styles.css" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+    <body lang="ru" ng-app="planningPoker">
+        <div ng-http-loader methods="'GET'" template="loader.html"></div>
+
+        <div class="container">
+            <h1>Project Title</h1>
+            <div ng-view>
+            </div>
+        </div>
+
+        <script src="scripts.js"></script>
+    </body>
+</html>

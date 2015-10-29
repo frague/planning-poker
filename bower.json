@@ -21,8 +21,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular-route": "~1.4.7",
-    "angular": "angularjs#~1.4.7",
-    "bootstrap": "~3.3.5"
+    "angular-full": "~1.4.7",
+    "bootstrap": "~3.3.5",
+    "angular-http-loader": "~0.1.4"
   }
 }
