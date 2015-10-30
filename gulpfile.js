@@ -46,7 +46,7 @@ gulp.task('build_sass', function () {
 gulp.task('styles', ['build_sass'], function () {
     return gulp.src([
             'bower_components/angular-full/angular-csp.css',
-            'bower_components/bootstrap/dist/css/bootstrap.css',
+            'bower_components/angular-material/angular-material.css',
             'dist/styles.css'
         ])
         .pipe(minifyCSS())
@@ -61,8 +61,11 @@ gulp.task('scripts:merge', function () {
             'bower_components/angular-full/angular.min.js',
             'bower_components/angular-full/angular-route.min.js',
             'bower_components/angular-full/angular-resource.min.js',
+            'bower_components/angular-full/angular-animate.min.js',
+            'bower_components/angular-full/angular-aria.min.js',
+            'bower_components/angular-full/angular-messages.min.js',
             'bower_components/angular-http-loader/app/package/js/angular-http-loader.min.js',
-            'bower_components/bootstrap/dist/js/bootstrap.min.js',
+            'bower_components/angular-material/angular-material.min.js',
             'app/*.js'
         ])
         .pipe(concat('scripts.js'))

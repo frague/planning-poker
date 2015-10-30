@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "angular-full": "~1.4.7",
-    "bootstrap": "~3.3.5",
-    "angular-http-loader": "~0.1.4"
+    "angular-http-loader": "~0.1.4",
+    "angular-material": "~0.11.4"
   }
 }
