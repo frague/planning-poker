@@ -26,9 +26,14 @@ gulp.task('copy', function () {
         .pipe(gulp.dest('dist'));
 });
 
+gulp.task('fonts', function () {
+    return gulp.src('bower_components/mdi/fonts/*.*')
+        .pipe(gulp.dest('dist/fonts'));
+});
+
 // Lint Task
 gulp.task('lint', function () {
-    return gulp.src('app/*.js')
+    return gulp.src('app/js/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
@@ -39,7 +44,7 @@ gulp.task('build_sass', function () {
         .pipe(sass())
         .pipe(autoprefixer('last 2 versions'))
         .pipe(rename('styles.css'))
-        .pipe(gulp.dest('dist'))
+        .pipe(gulp.dest('dist/css'))
 });
 
 // Concatenate, prefix and minify CSS
@@ -47,11 +52,12 @@ gulp.task('styles', ['build_sass'], function () {
     return gulp.src([
             'bower_components/angular-full/angular-csp.css',
             'bower_components/angular-material/angular-material.css',
-            'dist/styles.css'
+            'bower_components/mdi/css/materialdesignicons.min.css',
+            'dist/css/styles.css'
         ])
         .pipe(minifyCSS())
         .pipe(concat('styles.css'))
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest('dist/css'));
 });
 
 // Concatenate JS
@@ -69,7 +75,7 @@ gulp.task('scripts:merge', function () {
             'app/*.js'
         ])
         .pipe(concat('scripts.js'))
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest('dist/js'));
 });
 
 // Watch Files For Changes
@@ -81,7 +87,7 @@ gulp.task('watch', function () {
 
 // Uglify scripts for publishing
 gulp.task('publish', ['default'], function () {
-    return gulp.src('dest/scripts.js')
+    return gulp.src('dest/js/scripts.js')
         .pipe(uglify().on('error', gutil.log))
         .pipe(gulp.dest('dist'));
 });
@@ -89,6 +95,6 @@ gulp.task('publish', ['default'], function () {
 // Default Task
 gulp.task('default', function () {
     rimraf('dest', function () {
-        runSequence('bower', 'lint', 'styles', 'scripts:merge', 'copy');
+        runSequence('bower', 'lint', 'fonts', 'styles', 'scripts:merge', 'copy');
     })
 });

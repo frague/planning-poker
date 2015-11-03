@@ -1,25 +1,29 @@
-<h2>Create new game</h2>
+<section layout="row" layout-align="center center" layout-fill>
+	<div flex-sm="80" flex-md="50" flex-lg="40" flex-gt-lg="30">
+		<h2>Create new game</h2>
 
-<form name="gameForm">
-	<md-input-container>
-		<label>Game Title</label>
-		<input name="title" ng-model="title" required md-maxlength="20" minlength="4">
-		<div ng-messages="gameForm.title.$error" ng-show="gameForm.title.$dirty">
-			<div ng-message="required">This is required!</div>
-			<div ng-message="md-maxlength">That's too long!</div>
-			<div ng-message="minlength">That's too short!</div>
-		</div>
-	</md-input-container>
-	<md-input-container>
-		<label>Your Name</label>
-		<input name="name" ng-model="name" required md-maxlength="10" minlength="2">
-		<div ng-messages="gameForm.name.$error" ng-show="gameForm.name.$dirty">
-			<div ng-message="required">This is required!</div>
-			<div ng-message="md-maxlength">That's too long!</div>
-			<div ng-message="minlength">That's too short!</div>
-		</div>
-	</md-input-container>
-	<footer>
-		<md-button class="md-primary">Create</md-button>
-	</footer>
-</form>
+		<form name="gameForm">
+			<md-input-container>
+				<label>Game Title</label>
+				<input name="title" ng-model="title" required minlength="4">
+				<div ng-messages="gameForm.title.$error" ng-show="gameForm.title.$dirty">
+					<div ng-message="required">Game title is required</div>
+					<div ng-message="minlength">Game title is too short</div>
+				</div>
+			</md-input-container>
+			<md-input-container>
+				<label>Your Name</label>
+				<input name="name" ng-model="name" required minlength="2">
+				<div ng-messages="gameForm.name.$error" ng-show="gameForm.name.$dirty">
+					<div ng-message="required">Please enter your name</div>
+					<div ng-message="minlength">Name is too short</div>
+				</div>
+			</md-input-container>
+			<footer>
+				<md-button class="md-fab" aria-label="Create Game">
+					<md-icon md-font-library="material-icons">add</md-icon>
+				</md-button>
+			</footer>
+		</form>
+	</div>
+</section>

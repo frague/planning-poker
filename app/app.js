@@ -13,8 +13,17 @@ angular.module('planningPoker', [
     .config(function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
             .primaryPalette('grey')
-            .warnPalette('orange');
+            .warnPalette('deep-orange');
     })
+
+    .config([
+        'httpMethodInterceptorProvider',
+        function (httpMethodInterceptorProvider) {
+        'use strict';
+
+            httpMethodInterceptorProvider.whitelistDomain('');
+        }
+    ])
 
     .config(['$httpProvider', function ($httpProvider) {
         'use strict';
