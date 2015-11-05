@@ -12,6 +12,7 @@ angular.module('planningPoker', [
 
     .config(function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
+//            .backgroundPalette('light-green')
             .primaryPalette('grey')
             .warnPalette('deep-orange');
     })

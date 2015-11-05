@@ -5,13 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Planning Poker</title>
         <link rel="stylesheet" href="css/styles.css" />
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700&subset=cyrillic,latin" type="text/css" />
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,300,700&subset=cyrillic,latin" type="text/css" />
-        <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons" type="text/css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700&subset=cyrillic,latin" type="text/css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,700&subset=cyrillic,latin" type="text/css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Satisfy" type="text/css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" type="text/css" />
     </head>
     <body lang="ru" ng-app="planningPoker">
         <div ng-http-loader methods="'GET'" template="loader.html" class="loader"></div>
-        <md-content ng-view layout="column" layout-padding layout-fill></md-content>
+        <div ng-view layout="column" layout-padding layout-fill></div>
         <script src="js/scripts.js"></script>
     </body>
 </html>
