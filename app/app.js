@@ -8,7 +8,7 @@ angular.module('planningPoker', [
     'planningPoker.filters',
     'planningPoker.resources',
     'planningPoker.services',
-    'ngResource', 'ngRoute', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial', 'ng.httpLoader'])
+    'ngResource', 'ngRoute', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial', 'ng.httpLoader', 'ngLodash'])
 
     .config(function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
