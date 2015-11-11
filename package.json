@@ -9,8 +9,9 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "ejs": "2.3.3",
-    "express": "4.13.3"
+    "kerberos": "0.0.17",
+    "lodash": "^3.10.1",
+    "mongoose": "^4.2.5"
   },
   "engines": {
     "node": "0.12.7"
