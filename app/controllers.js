@@ -6,13 +6,23 @@
 angular.module('planningPoker.controllers', [
         'planningPoker.services',
         'planningPoker.filters',
-        'planningPoker.constants'
+        'planningPoker.constants',
+        'ngSocket'
     ])
 
     .controller('indexCtrl', [
-        '$scope', '$rootScope', '$location', 'lodash',
-        function ($scope, $rootScope, $location, _) {
+        '$scope', '$rootScope', '$location', '$socket', 'lodash',
+        function ($scope, $rootScope, $location, $socket, _) {
             'use strict';
+
+            $scope.i = 1;
+            $scope.ping = function () {
+                $socket.emit('pinging', $scope.i++);
+            };
+
+            $socket.on('an event', function() {
+                $scope.i = 100;
+            });
 
             $scope.create = function () {
 //                LoginService.logIn($scope.login,

@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var http = require('http');
+var express = require('express');
 var mongoose = require('mongoose');
 
 var uriString =
@@ -61,8 +61,8 @@ Role.find({}).exec(function (err, result) {
                 ].forEach(function (roleData) {
                     new Role({title: roleData[0], seesAll: roleData[1], mustVote: roleData[2]})
                         .save(function (err) {
-                            if (err) console.error('Error saving role "' + roleData[0] + '"');
-                        });
+                        if (err) console.error('Error saving role "' + roleData[0] + '"');
+                    });
                 });
             }
         });
@@ -71,9 +71,23 @@ Role.find({}).exec(function (err, result) {
 
 var User = mongoose.model('Users', userSchema);
 
-http.createServer(function (req, res) {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-}).listen(serverPort);
+//------------------------------------------------------------------
 
+var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+
+io.on('pinging', function (index) {
+    console.log('Pinged' + index);
+});
+
+io.on('connection', function (socket) {
+    console.log('Client connected', socket);
+    socket.emit('an event', { some: 'data' });
+});
+
+app.use(express.static('dist'));
+
+server.listen(serverPort);
 console.log('http server will be listening on port %d', serverPort);
 console.log('CTRL+C to exit');
