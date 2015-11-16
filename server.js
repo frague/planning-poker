@@ -77,13 +77,13 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
-io.on('pinging', function (index) {
-    console.log('Pinged' + index);
-});
-
 io.on('connection', function (socket) {
     console.log('Client connected', socket);
     socket.emit('an event', { some: 'data' });
+
+    socket.on('pinging', function (index) {
+        console.log('Pinged', index);
+    });
 });
 
 app.use(express.static('dist'));
