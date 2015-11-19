@@ -1,17 +1,13 @@
-var _ = require('lodash');
-var express = require('express');
-var mongoose = require('mongoose');
-
-var uriString =
-    process.env.MONGOLAB_URI ||
-    process.env.MONGOHQ_URL ||
-    'mongodb://localhost/it-poker';
-
-var serverPort = process.env.PORT || 5000;
+var _ = require('lodash'),
+    express = require('express'),
+    bodyParser = require('body-parser'),
+    mongoose = require('mongoose');
+    uriString = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/it-poker',
+    serverPort = process.env.PORT || 5000;
 
 mongoose.connect(uriString, function (err, res) {
     if (err) {
-        console.log('ERROR connecting to: ' + uriString + '. ' + err);
+        console.error('Error connecting to: ' + uriString + '. ' + err);
     } else {
         console.log('Succeeded connected to: ' + uriString);
     }
@@ -50,6 +46,7 @@ var voteSchema = new mongoose.Schema({
 
 // Models definitions
 var Role = mongoose.model('Roles', roleSchema);
+
 Role.find({}).exec(function (err, result) {
     if (err || result.length !== 4) {
         Role.remove({}).exec(function (err, result) {
@@ -61,8 +58,8 @@ Role.find({}).exec(function (err, result) {
                 ].forEach(function (roleData) {
                     new Role({title: roleData[0], seesAll: roleData[1], mustVote: roleData[2]})
                         .save(function (err) {
-                        if (err) console.error('Error saving role "' + roleData[0] + '"');
-                    });
+                            if (err) console.error('Error saving role "' + roleData[0] + '"');
+                        });
                 });
             }
         });
@@ -70,15 +67,20 @@ Role.find({}).exec(function (err, result) {
 });
 
 var User = mongoose.model('Users', userSchema);
+var Room = mongoose.model('Room', roomSchema);
 
 //------------------------------------------------------------------
+
+function errorResponse(res, code, message, trace) {
+    return res.status(code).json({message: message, trace: trace});
+}
 
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
 io.on('connection', function (socket) {
-    console.log('Client connected', socket);
+    console.log('Client connected');
     socket.emit('an event', { some: 'data' });
 
     socket.on('pinging', function (index) {
@@ -87,6 +89,32 @@ io.on('connection', function (socket) {
 });
 
 app.use(express.static('dist'));
+app.use(bodyParser.json());
+
+app.post('/room', function (req, res) {
+    var now = new Date();
+    new Room({title: req.body.title, creationDate: now})
+        .save(function (err, room) {
+            if (err) return errorResponse(res, 500, 'Room creation', err);
+            Role.findOne({title: 'Admin'})
+                .exec(function (err, adminRole) {
+                    if (err) return errorResponse(res, 404, 'Admin role not found', err);
+                    new User({name: req.body.owner, creationDate: now, roomId: room.id, roleId: adminRole.id})
+                        .save(function (err, user) {
+                            if (err) return errorResponse(res, 500, 'User creation', err);
+                            return res.json({room: room, user: user});
+                        });
+                });
+        });
+});
+
+app.get('/room/:roomId', function (req, res) {
+    Room.findOne({_id: req.params.roomId})
+        .exec(function (err, room) {
+            if (err) return errorResponse(res, 404, 'Room does not exist or expired');
+            return res.json(room);
+        })
+});
 
 server.listen(serverPort);
 console.log('http server will be listening on port %d', serverPort);

@@ -9,6 +9,7 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "body-parser": "^1.14.1",
     "express": "^4.13.3",
     "kerberos": "0.0.17",
     "lodash": "^3.10.1",
