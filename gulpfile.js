@@ -70,6 +70,7 @@ gulp.task('scripts:merge', function () {
             'bower_components/angular-full/angular-animate.min.js',
             'bower_components/angular-full/angular-aria.min.js',
             'bower_components/angular-full/angular-messages.min.js',
+            'bower_components/angular-full/angular-cookies.min.js',
             'bower_components/angular-http-loader/app/package/js/angular-http-loader.min.js',
             'bower_components/ng-lodash/build/ng-lodash.min.js',
             'bower_components/socket.io.client/dist/socket.io-*.js',

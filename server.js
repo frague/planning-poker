@@ -75,17 +75,19 @@ function errorResponse(res, code, message, trace) {
     return res.status(code).json({message: message, trace: trace});
 }
 
-var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var app = express(),
+    server = require('http').createServer(app),
+    io = require('socket.io')(server),
+    socket;
 
-io.on('connection', function (socket) {
-    console.log('Client connected');
-    socket.emit('an event', { some: 'data' });
-
-    socket.on('pinging', function (index) {
-        console.log('Pinged', index);
-    });
+io.on('connection', function (s) {
+    socket = s;
+//    console.log('Client connected');
+//    socket.emit('an event', { some: 'data' });
+//
+//    socket.on('pinging', function (index) {
+//        console.log('Pinged', index);
+//    });
 });
 
 app.use(express.static('dist'));
