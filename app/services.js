@@ -14,7 +14,7 @@ angular.module('planningPoker.services', ['planningPoker.resources'])
                 get: function (roomId, callback, errback) {
                     return RoomResource.get({roomId: roomId}, {}, callback, errback);
                 },
-                create: function (title, ownerName, callback, errback) {
+                save: function (title, ownerName, callback, errback) {
                     return RoomResource.save(
                         {}, {title: title, owner: ownerName}, callback, errback
                     );
