@@ -19,8 +19,12 @@
 					<div ng-message="minlength">Name is too short</div>
 				</div>
 			</md-input-container>
+			<md-input-container>
+				<label>Email address</label>
+				<input name="email" ng-model="email">
+			</md-input-container>
 			<footer>
-				<md-button aria-label="Create Game" ng-click="create()">Create</md-button>
+				<md-button aria-label="Create Game" ng-click="create()">Create New Game</md-button>
 			</footer>
 		</form>
 	</md-content>

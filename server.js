@@ -16,6 +16,7 @@ mongoose.connect(uriString, function (err, res) {
 // Scemas definitions
 var userSchema = new mongoose.Schema({
     name: String,
+    email: String,
     creationDate: Date,
     roomId: String,
     roleId: String
@@ -101,7 +102,9 @@ app.post('/room', function (req, res) {
             Role.findOne({title: 'Admin'})
                 .exec(function (err, adminRole) {
                     if (err) return errorResponse(res, 404, 'Admin role not found', err);
-                    new User({name: req.body.owner, creationDate: now, roomId: room.id, roleId: adminRole.id})
+                    new User({name: req.body.owner, creationDate: now,
+                              roomId: room.id, roleId: adminRole.id, email: req.body.email
+                             })
                         .save(function (err, user) {
                             if (err) return errorResponse(res, 500, 'User creation', err);
                             return res.json({room: room, user: user});

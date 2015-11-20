@@ -8,23 +8,32 @@ angular.module('planningPoker', [
     'planningPoker.filters',
     'planningPoker.resources',
     'planningPoker.services',
-    'ngResource', 'ngRoute', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial', 'ng.httpLoader', 'ngLodash', 'ngSocket', 'ngCookies'])
+    'ngResource', 'ngRoute', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial', 'ng.httpLoader', 'ngLodash', 'ngSocket', 'ngCookies', 'ui.gravatar'])
 
     .config(function($mdThemingProvider) {
-    $mdThemingProvider.theme('default')
-    //            .backgroundPalette('light-green')
-        .primaryPalette('grey')
-        .warnPalette('deep-orange');
-})
+        $mdThemingProvider.theme('default')
+//            .backgroundPalette('light-green')
+            .primaryPalette('grey')
+            .warnPalette('deep-orange');
+    })
 
     .config([
-    'httpMethodInterceptorProvider',
-    function (httpMethodInterceptorProvider) {
+        'httpMethodInterceptorProvider',
+        function (httpMethodInterceptorProvider) {
+            'use strict';
+
+            httpMethodInterceptorProvider.whitelistDomain('');
+        }
+    ])
+
+    .config(['gravatarServiceProvider', function(gravatarServiceProvider) {
         'use strict';
 
-        httpMethodInterceptorProvider.whitelistDomain('');
-    }
-])
+        gravatarServiceProvider.defaults = {
+            size: 50,
+            default: 'mm'
+        };
+    }])
 
     .config(['$httpProvider', function ($httpProvider) {
         'use strict';

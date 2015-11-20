@@ -76,6 +76,7 @@ gulp.task('scripts:merge', function () {
             'bower_components/socket.io.client/dist/socket.io-*.js',
             'bower_components/ng-socket/ngSocket.js',
             'bower_components/angular-material/angular-material.min.js',
+            'bower_components/angular-gravatar/build/angular-gravatar.js',
             'app/*.js'
         ])
         .pipe(concat('scripts.js'))
