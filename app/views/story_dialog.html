@@ -1,0 +1,37 @@
+<md-dialog aria-label="User Story" ng-cloak flex-gt-lg="60" flex-lg="60" flex-md="80" flex-sm="100">
+    <form name="userStoryForm">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{ oldStory ? oldStory.title : 'New User Story'}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon aria-label="Close dialog">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-input-container>
+                    <label>Title</label>
+                    <input name="title" ng-model="story.title" required>
+                    <div ng-messages="userStoryForm.title.$error" ng-show="userStoryForm.title.$dirty">
+                        <div ng-message="required">User Story title is required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <label>Description</label>
+                    <textarea name="name" ng-model="story.description" rows="5"></textarea>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="save(story)">
+                Save
+            </md-button>
+            <md-button ng-click="cancel()" style="margin-right:20px;">
+                Cancel
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

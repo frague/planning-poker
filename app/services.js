@@ -6,8 +6,8 @@
 angular.module('planningPoker.services', ['planningPoker.resources'])
 
     .factory('RoomService', [
-        '$rootScope', 'RoomResource',
-        function ($rootScope, RoomResource) {
+        'RoomResource',
+        function (RoomResource) {
             'use strict';
 
             return {
@@ -17,6 +17,27 @@ angular.module('planningPoker.services', ['planningPoker.resources'])
                 save: function (title, ownerName, email, callback, errback) {
                     return RoomResource.save(
                         {}, {title: title, owner: ownerName, email: email}, callback, errback
+                    );
+                }
+            };
+    }])
+    .factory('UserStoryService', [
+        'UserStoryResource',
+        function (UserStoryResource) {
+            'use strict';
+
+            return {
+                get: function (storyId, callback, errback) {
+                    return UserStoryResource.get({storyId: storyId}, {}, callback, errback);
+                },
+                save: function (storyId, title, description, callback, errback) {
+                    return UserStoryResource.save(
+                        {storyId: storyId}, {title: title, description: description}, callback, errback
+                    );
+                },
+                delete: function (storyId, callback, errback) {
+                    return UserStoryResource.delete(
+                        {storyId: storyId}, {}, callback, errback
                     );
                 }
             };

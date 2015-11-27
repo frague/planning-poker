@@ -11,11 +11,11 @@ angular.module('planningPoker', [
     'ngResource', 'ngRoute', 'ngAnimate', 'ngAria', 'ngMessages', 'ngMaterial', 'ng.httpLoader', 'ngLodash', 'ngSocket', 'ngCookies', 'ui.gravatar'])
 
     .config(function($mdThemingProvider) {
-        $mdThemingProvider.theme('default')
-//            .backgroundPalette('light-green')
-            .primaryPalette('grey')
-            .warnPalette('deep-orange');
-    })
+    $mdThemingProvider.theme('default')
+    //            .backgroundPalette('light-green')
+        .primaryPalette('light-blue')
+        .warnPalette('deep-orange');
+})
 
     .config([
         'httpMethodInterceptorProvider',

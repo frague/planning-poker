@@ -77,22 +77,21 @@ function errorResponse(res, code, message, trace) {
 }
 
 var app = express(),
+    cookieParser = require('cookie-parser'),
     server = require('http').createServer(app),
     io = require('socket.io')(server),
     socket;
 
-io.on('connection', function (s) {
-    socket = s;
-//    console.log('Client connected');
-//    socket.emit('an event', { some: 'data' });
-//
-//    socket.on('pinging', function (index) {
-//        console.log('Pinged', index);
-//    });
+io.on('connection', function (socket) {
+    socket.on('join', function (roomId) {
+        socket.join(roomId);
+        console.log('Client joined to room', roomId);
+    });
 });
 
 app.use(express.static('dist'));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.post('/room', function (req, res) {
     var now = new Date();
@@ -114,11 +113,31 @@ app.post('/room', function (req, res) {
 });
 
 app.get('/room/:roomId', function (req, res) {
-    Room.findOne({_id: req.params.roomId})
+    var roomId = req.params.roomId;
+    Room.findOne({_id: roomId})
         .exec(function (err, room) {
             if (err) return errorResponse(res, 404, 'Room does not exist or expired');
-            return res.json(room);
-        })
+            User.find({roomId: roomId})
+                .exec(function (err, users) {
+                    Role.find({}).exec(function (err, roles) {
+                        return res.json({room: room, users: users, roles: roles});
+                    })
+                });
+        });
+});
+
+app.all('/room/:roomId', function (req, res) {
+    var roomId = req.params.roomId;
+    Room.findOne({_id: roomId})
+        .exec(function (err, room) {
+            if (err) return errorResponse(res, 404, 'Room does not exist or expired');
+            User.find({roomId: roomId})
+                .exec(function (err, users) {
+                    Role.find({}).exec(function (err, roles) {
+                        return res.json({room: room, users: users, roles: roles});
+                    })
+                });
+        });
 });
 
 server.listen(serverPort);
