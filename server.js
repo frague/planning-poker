@@ -35,7 +35,8 @@ var roleSchema = new mongoose.Schema({
 
 var userStorySchema = new mongoose.Schema({
     title: String,
-    finalEstimate: Number
+    description: String,
+    estimate: Number
 });
 
 var voteSchema = new mongoose.Schema({
@@ -67,8 +68,9 @@ Role.find({}).exec(function (err, result) {
     }
 });
 
-var User = mongoose.model('Users', userSchema);
-var Room = mongoose.model('Room', roomSchema);
+var User = mongoose.model('Users', userSchema),
+    Room = mongoose.model('Room', roomSchema),
+    UserStory = mongoose.model('UserStory', userStorySchema);
 
 //------------------------------------------------------------------
 
@@ -126,18 +128,38 @@ app.get('/room/:roomId', function (req, res) {
         });
 });
 
-app.all('/room/:roomId', function (req, res) {
-    var roomId = req.params.roomId;
-    Room.findOne({_id: roomId})
-        .exec(function (err, room) {
-            if (err) return errorResponse(res, 404, 'Room does not exist or expired');
-            User.find({roomId: roomId})
-                .exec(function (err, users) {
-                    Role.find({}).exec(function (err, roles) {
-                        return res.json({room: room, users: users, roles: roles});
-                    })
-                });
-        });
+app.all('/story/:storyId', function (req, res) {
+    var storyId = req.params.storyId;
+    if (storyId) {
+        UserStory.findOne({_id: storyId})
+            .exec(function (err, story) {
+                if (err) return errorResponse(res, 404, 'UserStory does not exist or expired');
+                var storyData = {
+                        title: req.params.title,
+                        description: req.params.description,
+                        estimate: req.params.estimate
+                    };
+                switch (req.method) {
+                    case 'DELETE': UserStory.deleteOne({_id: storyId})
+                        .exec(function (err, result) {
+                            if (err) return errorResponse(res, 404, 'Unable to delete user story');
+                            return res.json(result);
+                        });
+                        break;
+                    case 'POST': UserStory.updateOne(
+                            {_id: storyId},
+                            {
+                                $set: storyData,
+                                $currentDate: {'lastModified': true }
+                            }
+                        ).exec(function (err, result) {
+                            return res.json(result);
+                        });
+                        break;
+                    case 'GET': return res.json(story);
+                }
+            });
+    }
 });
 
 server.listen(serverPort);

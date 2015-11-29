@@ -27,8 +27,8 @@ angular.module('planningPoker.controllers', [
         }])
 
     .controller('gameCtrl', [
-    '$scope', '$location', '$routeParams', '$socket', 'lodash', '$mdDialog', '$mdMedia', 'RoomService', 'templatesPath',
-    function ($scope, $location, $routeParams, $socket, _, $mdDialog, $mdMedia, RoomService, templatesPath) {
+    '$scope', '$location', '$routeParams', '$socket', '$cookies', 'lodash', '$mdDialog', '$mdMedia', 'RoomService', 'templatesPath',
+    function ($scope, $location, $routeParams, $socket, $cookies, _, $mdDialog, $mdMedia, RoomService, templatesPath) {
         'use strict';
 
         $scope.data = {};

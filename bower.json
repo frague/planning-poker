@@ -1,36 +1,36 @@
 {
-  "name": "planning-poker",
-  "description": "On-line planning poker for distributed scrum teams",
-  "main": "index.js",
-  "authors": [
-    "Nick Bogdanov"
-  ],
-  "license": "ISC",
-  "keywords": [
-    "scrum",
-    "planning",
-    "poker"
-  ],
-  "homepage": "https://github.com/frague/planning-poker",
-  "moduleType": [],
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "angular-full": "~1.4.7",
-    "angular-http-loader": "~0.1.4",
-    "angular-material": "~0.11.4",
-    "ng-lodash": "~0.3.0",
-    "ng-socket": "~0.1.2",
-    "socket.io": "~1.3.7",
-    "socket.io.client": "~1.3.5",
-    "angular-gravatar": "~0.4.1"
-  },
-  "resolutions": {
-    "angular": "~1.4.7"
-  }
+    "name": "planning-poker",
+    "description": "On-line planning poker for distributed scrum teams",
+    "main": "index.js",
+    "authors": [
+        "Nick Bogdanov"
+    ],
+    "license": "ISC",
+    "keywords": [
+        "scrum",
+        "planning",
+        "poker"
+    ],
+    "homepage": "https://github.com/frague/planning-poker",
+    "moduleType": [],
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "angular-full": "~1.4.7",
+        "angular-http-loader": "~0.1.4",
+        "angular-material": "~0.11.4",
+        "ng-lodash": "~0.3.0",
+        "ng-socket": "~0.1.2",
+        "socket.io": "~1.3.7",
+        "socket.io.client": "~1.3.5",
+        "angular-gravatar": "~0.4.1"
+    },
+    "resolutions": {
+        "angular": "~1.4.7"
+    }
 }
