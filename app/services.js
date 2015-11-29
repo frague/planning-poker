@@ -30,9 +30,9 @@ angular.module('planningPoker.services', ['planningPoker.resources'])
                 get: function (storyId, callback, errback) {
                     return UserStoryResource.get({storyId: storyId}, {}, callback, errback);
                 },
-                save: function (storyId, title, description, callback, errback) {
+                save: function (storyId, userStory, callback, errback) {
                     return UserStoryResource.save(
-                        {storyId: storyId}, {title: title, description: description}, callback, errback
+                        {storyId: storyId}, userStory, callback, errback
                     );
                 },
                 delete: function (storyId, callback, errback) {

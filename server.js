@@ -34,6 +34,7 @@ var roleSchema = new mongoose.Schema({
 });
 
 var userStorySchema = new mongoose.Schema({
+    roomId: String,
     title: String,
     description: String,
     estimate: Number
@@ -121,24 +122,30 @@ app.get('/room/:roomId', function (req, res) {
             if (err) return errorResponse(res, 404, 'Room does not exist or expired');
             User.find({roomId: roomId})
                 .exec(function (err, users) {
-                    Role.find({}).exec(function (err, roles) {
-                        return res.json({room: room, users: users, roles: roles});
-                    })
+                    Role.find({})
+                        .exec(function (err, roles) {
+                            UserStory.find({roomId: roomId})
+                                .exec(function (err, stories) {
+                                    return res.json({room: room, users: users, roles: roles, stories: stories});
+                                });
+                        });
                 });
         });
 });
 
-app.all('/story/:storyId', function (req, res) {
-    var storyId = req.params.storyId;
+app.all('/story/:storyId?*', function (req, res) {
+    var storyId = req.params.storyId,
+        storyData = {
+            roomId: req.body.roomId,
+            title: req.body.title,
+            description: req.body.description,
+            estimate: req.body.estimate
+        };
+
     if (storyId) {
         UserStory.findOne({_id: storyId})
             .exec(function (err, story) {
                 if (err) return errorResponse(res, 404, 'UserStory does not exist or expired');
-                var storyData = {
-                        title: req.params.title,
-                        description: req.params.description,
-                        estimate: req.params.estimate
-                    };
                 switch (req.method) {
                     case 'DELETE': UserStory.deleteOne({_id: storyId})
                         .exec(function (err, result) {
@@ -159,7 +166,14 @@ app.all('/story/:storyId', function (req, res) {
                     case 'GET': return res.json(story);
                 }
             });
-    }
+    } else if (req.method === 'POST') {
+        console.log(JSON.stringify(storyData), req.body);
+        new UserStory(storyData)
+            .save(function (err) {
+                if (err) return errorResponse(res, 500, 'Unable to create user story');
+                return res.json({});
+            });
+    } else return errorResponse(res, 500, 'Internal server error');
 });
 
 server.listen(serverPort);

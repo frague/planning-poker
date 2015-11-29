@@ -2,7 +2,7 @@
     <form name="userStoryForm">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>{{ oldStory ? oldStory.title : 'New User Story'}}</h2>
+                <h2>{{ oldStory._id ? oldStory.title : 'New User Story'}} {{ roomId }}</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <md-icon aria-label="Close dialog">close</md-icon>
@@ -11,6 +11,7 @@
         </md-toolbar>
         <md-dialog-content>
             <div class="md-dialog-content">
+                <div class="error" ng-bind="error"></div>
                 <md-input-container>
                     <label>Title</label>
                     <input name="title" ng-model="story.title" required>

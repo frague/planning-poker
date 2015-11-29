@@ -26,9 +26,35 @@ angular.module('planningPoker.controllers', [
             };
         }])
 
+    .controller('StoryDialogCtrl', [
+        '$scope', '$mdDialog', 'oldStory', 'roomId', 'UserStoryService', 'lodash',
+        function ($scope, $mdDialog, oldStory, roomId, UserStoryService, _) {
+
+        $scope.oldStory = oldStory || {};
+        $scope.oldStory.roomId = roomId;
+        $scope.story = _.clone($scope.oldStory);
+        $scope.error = null;
+
+        console.log(oldStory, roomId, $scope.story);
+
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+
+        $scope.save = function(story) {
+            UserStoryService.save(story._id, story, function () {
+                $mdDialog.hide();
+            }, function () {
+                $scope.error = 'Error saving user story information';
+            })
+        };
+    }])
+
     .controller('gameCtrl', [
-    '$scope', '$location', '$routeParams', '$socket', '$cookies', 'lodash', '$mdDialog', '$mdMedia', 'RoomService', 'templatesPath',
-    function ($scope, $location, $routeParams, $socket, $cookies, _, $mdDialog, $mdMedia, RoomService, templatesPath) {
+    '$scope', '$location', '$routeParams', '$socket', '$cookies', 'lodash',
+    '$mdDialog', '$mdMedia', 'UserStoryService', 'RoomService', 'templatesPath',
+    function ($scope, $location, $routeParams, $socket, $cookies, _,
+               $mdDialog, $mdMedia, UserStoryService, RoomService, templatesPath) {
         'use strict';
 
         $scope.data = {};
@@ -64,32 +90,19 @@ angular.module('planningPoker.controllers', [
         });
 
         $scope.getCurrentStory = function () {
-            if (!$scope.data.stories || $scope.stories.lenght < storyIndex) return '-';
-            return $scope.stories[storyIndex];
-        };
-
-        function StoryDialogCtrl($scope, $mdDialog, oldStory) {
-            $scope.oldStory = oldStory;
-            $scope.story = _.clone(oldStory);
-
-            $scope.cancel = function() {
-                $mdDialog.cancel();
-            };
-            $scope.save = function(story) {
-                console.log(story);
-//                $mdDialog.hide($scope.title, $scope.description);
-            };
+            if (!$scope.data.stories || $scope.data.stories.length < storyIndex) return '-';
+            return $scope.data.stories[storyIndex].title;
         };
 
         $scope.addUserStory = function(oldStory) {
             $mdDialog.show({
-                controller: StoryDialogCtrl,
+                controller: 'StoryDialogCtrl',
                 templateUrl: templatesPath + 'story_dialog.html',
-//                parent: angular.element(document.body),
                 openFrom: '#edit-story',
                 clickOutsideToClose: true,
                 locals: {
-                    oldStory: oldStory
+                    oldStory: oldStory,
+                    roomId: roomId
                 },
                 fullscreen: $mdMedia('sm') && $scope.customFullscreen
             })

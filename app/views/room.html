@@ -11,18 +11,27 @@
 </md-toolbar>
 <md-content>
     <section layout="row" layout-align="center" layout-padding>
-        <div flex flex-gt-lg="60" class="md-whiteframe-2dp">
-            <h2 ng-bind="data.room.title"></h2>
-            <h3>
-                <md-button class="md-fab" style="float:right" ng-click="addUserStory()" id="edit-story">
-                    <md-icon>add</md-icon>
-                </md-button>
-                <span ng-bind="getCurrentStory()"></span>
-            </h3>
-        </div>
+        <section layout="column" flex flex-gt-lg="60">
+            <div class="md-whiteframe-2dp">
+                <h2 ng-bind="data.room.title"></h2>
+                <h3>
+                    <md-button class="md-fab" style="float:right" ng-click="addUserStory()" id="edit-story">
+                        <md-icon>add</md-icon>
+                    </md-button>
+                    <span ng-bind="getCurrentStory()"></span>
+                </h3>
+            </div>
+            <div class="md-whiteframe-2dp">
+                <md-list class="players">
+                    <md-list-item ng-repeat="s in data.stories">
+                        {{ s.title }}
+                    </md-list-item>
+                </md-list>
+            </div>
+        </section>
         <div flex flex-gt-lg="20">
             <md-list class="players">
-                <md-list-item  class="md-2-line" ng-repeat="u in data.users" >
+                <md-list-item  class="md-2-line" ng-repeat="u in data.users">
                     <div class="md-list-item-text">
                         <h3 ng-bind="u.name"></h3>
                         <p ng-bind="roles[u.roleId]"></p>
