@@ -11,7 +11,7 @@
 </md-toolbar>
 <md-content>
     <section layout="row" layout-align="center" layout-padding>
-        <section layout="column" flex flex-gt-lg="60">
+        <section layout="column" flex flex-md="70" flex-gt-lg="60">
             <div class="md-whiteframe-2dp">
                 <h2 ng-bind="data.room.title"></h2>
                 <h3>
@@ -29,7 +29,7 @@
                 </md-list>
             </div>
         </section>
-        <div flex flex-gt-lg="20">
+        <div flex flex-md="30" flex-gt-md="20">
             <md-list class="players">
                 <md-list-item  class="md-2-line" ng-repeat="u in data.users">
                     <div class="md-list-item-text">

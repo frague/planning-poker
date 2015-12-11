@@ -90,7 +90,7 @@ angular.module('planningPoker.controllers', [
         });
 
         $scope.getCurrentStory = function () {
-            if (!$scope.data.stories || $scope.data.stories.length < storyIndex) return '-';
+            if (!$scope.data.stories || $scope.data.stories.length <= storyIndex) return '-';
             return $scope.data.stories[storyIndex].title;
         };
 

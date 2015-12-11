@@ -86,17 +86,31 @@ var app = express(),
     socket;
 
 io.on('connection', function (socket) {
-    socket.on('join', function (roomId) {
-        socket.join(roomId);
-        console.log('Client joined to room', roomId);
+    socket.on('join', function (data) {
+        socket.join(data.roomId);
     });
 });
+
+function update(roomId) {
+    var data = {};
+    UserStory.find({roomId: roomId})
+        .exec(function (err, stories) {
+            if (err) return errorResponse(res, 500, 'Error stories fetching', err);
+            data.stories = stories;
+            User.find({roomId: roomId})
+                .exec(function (err, users) {
+                    if (err) return errorResponse(res, 500, 'Error users fetching', err);
+                    data.users = users;
+                    io.to(roomId).emit('update', data);
+                })
+        })
+};
 
 app.use(express.static('dist'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.post('/room', function (req, res) {
+app.post('/rooms', function (req, res) {
     var now = new Date();
     new Room({title: req.body.title, creationDate: now})
         .save(function (err, room) {
@@ -115,7 +129,7 @@ app.post('/room', function (req, res) {
         });
 });
 
-app.get('/room/:roomId', function (req, res) {
+app.get('/rooms/:roomId', function (req, res) {
     var roomId = req.params.roomId;
     Room.findOne({_id: roomId})
         .exec(function (err, room) {
@@ -133,7 +147,7 @@ app.get('/room/:roomId', function (req, res) {
         });
 });
 
-app.all('/story/:storyId?*', function (req, res) {
+app.all('/stories/:storyId?*', function (req, res) {
     var storyId = req.params.storyId,
         storyData = {
             roomId: req.body.roomId,
@@ -171,9 +185,12 @@ app.all('/story/:storyId?*', function (req, res) {
         new UserStory(storyData)
             .save(function (err) {
                 if (err) return errorResponse(res, 500, 'Unable to create user story');
+                update(req.body.roomId);
                 return res.json({});
             });
-    } else return errorResponse(res, 500, 'Internal server error');
+    } else {
+        return errorResponse(res, 500, 'Internal server error');
+    }
 });
 
 server.listen(serverPort);

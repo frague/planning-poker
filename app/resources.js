@@ -4,11 +4,10 @@
 angular.module('planningPoker.resources', [])
     .factory('RoomResource', ['$resource', 'endpoint', function ($resource, endpoint) {
         'use strict';
-
-        return $resource(endpoint + '/room/:roomId');
+        return $resource(endpoint + '/rooms/:roomId');
     }])
+
     .factory('UserStoryResource', ['$resource', 'endpoint', function ($resource, endpoint) {
         'use strict';
-
-        return $resource(endpoint + '/story/:storyId');
+        return $resource(endpoint + '/stories/:storyId');
     }]);
